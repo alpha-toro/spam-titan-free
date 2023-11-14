@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
+import re
 
 app = FastAPI()
 
@@ -11,6 +12,8 @@ badwords = [
 bademails = [
     '.ru','example','test','ericjones','eric.jones'
 ]
+
+special_characters = re.compile('[@_!#$%^&*()<>?/|}{~:]')
 
 class Input(BaseModel):
      message: str
@@ -38,6 +41,9 @@ async def check_spam(data: Input):
      for x in msg_arr:
          if x.lower() in badwords:
           message_response = x+" picked up as spam"
+
+         if special_characters.search(x):
+          message_response = "Special characters are not allowed" 
 
      for x in bademails:
          if x.lower() in data.email:
