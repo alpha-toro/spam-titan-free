@@ -5,7 +5,7 @@ from pydantic import BaseModel
 app = FastAPI()
 
 badwords = [
-     'dogecoin','viagra','porn','sex','babes','gambling','poker','bitcoin','bit.ly','https','bit.ly','free','youtu.be','youtube','example','test','SEO','jasper','free'
+     'dogecoin','viagra','porn','sex','babes','gambling','poker','bitcoin','bit.ly','https','bit.ly','free','youtu.be','youtube','example','test','seo','jasper','free'
 ]
 
 bademails = [
@@ -36,11 +36,11 @@ async def check_spam(data: Input):
      msg_arr = data.message.split()
 
      for x in msg_arr:
-         if x in badwords:
+         if x.lower() in badwords:
           message_response = x+" picked up as spam"
 
      for x in bademails:
-         if x in data.email:
+         if x.lower() in data.email:
           email_response = x+" not allowed"     
 
      if message_response == "" and email_response == "":
